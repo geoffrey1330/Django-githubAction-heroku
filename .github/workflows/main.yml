@@ -48,11 +48,12 @@ jobs:
       if: ${{ github.event_name == 'push' }}
       steps:
         - uses: actions/checkout@v2
-        - name: Deploy to production
+        - name: Add remote origin
           run: |
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master        
-
-
+           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+        - name: Deploy to Heroku
+          run: |
+           git push heroku HEAD:master -f
 
         # - uses: akhileshns/heroku-deploy@v3.12.12
         #   with:
